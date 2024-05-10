@@ -1,20 +1,20 @@
-import { MapComponent, MapTypes } from "@neshan-maps-platform/mapbox-gl-react";
-import "@neshan-maps-platform/mapbox-gl-react/dist/style.css";
-import { SearchComponent } from "./components";
+import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
+import { useState } from "react";
+import {
+  GeolocationComponent,
+  MapComponent,
+  SearchComponent,
+} from "./components";
 
 export default function App() {
+  const [coordinates, setCoordinates] = useState<mapboxgl.LngLatLike>([
+    51.389, 35.6892,
+  ]);
+
   return (
     <div className="w-full h-full relative">
-      <MapComponent
-        options={{
-          mapKey: "web.fcd433b8ddb9445eaf875e0fdc7f8c71",
-          mapType: MapTypes.neshanRaster,
-          zoom: 11,
-          center: [59.6067, 36.2972],
-          poi: true,
-        }}
-      />
-
+      <GeolocationComponent onCoordinatesChange={setCoordinates} />
+      <MapComponent coordinates={coordinates} />
       <SearchComponent />
     </div>
   );
