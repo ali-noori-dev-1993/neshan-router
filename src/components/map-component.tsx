@@ -6,7 +6,8 @@ interface MapProps {
   coordinates: mapboxgl.LngLatLike;
 }
 
-export const MapComponent: React.FC<MapProps> = ({ coordinates }) => {
+export const MapComponent = ({ coordinates }: MapProps) => {
+  const mapKey = process.env.REACT_APP_MAP_API_KEY;
   useEffect(() => {
     new nmp_mapboxgl.Map({
       mapType: nmp_mapboxgl.Map.mapTypes.neshanVector,
@@ -17,7 +18,7 @@ export const MapComponent: React.FC<MapProps> = ({ coordinates }) => {
       minZoom: 2,
       maxZoom: 21,
       trackResize: true,
-      mapKey: "web.fcd433b8ddb9445eaf875e0fdc7f8c71",
+      mapKey: mapKey ?? "",
       poi: true,
       traffic: false,
     });

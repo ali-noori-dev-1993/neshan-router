@@ -15,7 +15,7 @@ export default function App() {
     <div className="w-full h-full relative">
       <GeolocationComponent onCoordinatesChange={setCoordinates} />
       <MapComponent coordinates={coordinates} />
-      <SearchComponent />
+      <SearchComponent coordinates={coordinates} />
     </div>
   );
 }

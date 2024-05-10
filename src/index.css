@@ -58,6 +58,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  ::-webkit-scrollbar {
+    @apply w-0;
+  }
+}
+
 html {
   height: 100%;
 }
