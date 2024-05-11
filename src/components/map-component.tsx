@@ -23,13 +23,15 @@ export const MapComponent = () => {
       traffic: false,
     });
 
+    const popup = new nmp_mapboxgl.Popup({ offset: 25 }).setText("مکان شما");
+
+    new nmp_mapboxgl.Marker({ color: "#1975d2" })
+      .setPopup(popup)
+      .setLngLat(coordinates)
+      .addTo(map as any)
+      .togglePopup();
+
     setMap(map);
-
-    // const marker = new nmp_mapboxgl.Marker()
-    //   .setLngLat([51.389, 35.6892])
-    //   .addTo(map as any);
-
-    // setTimeout(() => marker.remove(), 5000);
   }, [coordinates, setMap]);
 
   return <div id="map" className="w-full h-full"></div>;

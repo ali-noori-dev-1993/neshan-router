@@ -84,7 +84,7 @@ export function SearchComponent() {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="outline-none w-full bg-transparent"
           />
-          <FaSearch className="h-full cursor-pointer" onClick={removeMarkers} />
+          <FaSearch className="h-full cursor-pointer" />
 
           {open && (
             <div className="flex gap-2 h-full">
