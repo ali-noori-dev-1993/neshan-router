@@ -1,13 +1,10 @@
-import { useEffect } from "react";
-
-interface GeolocationProps {
-  onCoordinatesChange: (coordinates: mapboxgl.LngLatLike) => void;
-}
+import { useContext, useEffect } from "react";
+import { CoordinatesContext } from "../contexts";
 
 // This component retrieves the user's current geolocation coordinates using the browser's navigator API.
-export const GeolocationComponent = ({
-  onCoordinatesChange,
-}: GeolocationProps) => {
+export const GeolocationComponent = () => {
+  const { setCoordinates } = useContext(CoordinatesContext);
+
   useEffect(() => {
     // Check if the browser supports geolocation
     if (navigator.geolocation) {
@@ -15,7 +12,7 @@ export const GeolocationComponent = ({
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          // onCoordinatesChange([longitude, latitude]);
+          setCoordinates([longitude, latitude]);
         },
         (error) => {
           console.log("Error retrieving location:", error);
@@ -24,7 +21,7 @@ export const GeolocationComponent = ({
     } else {
       console.error("Geolocation is not supported by your browser");
     }
-  }, [onCoordinatesChange]);
+  }, [setCoordinates]);
 
   return null;
 };
