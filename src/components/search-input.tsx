@@ -3,6 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
 import { searchNearbyPlaces } from "../api";
 import { CoordinatesContext, MapContext } from "../contexts";
+import { toastService } from "../toast";
 import { Place } from "../types";
 import { addMarkers, removeMarkers } from "../utils";
 
@@ -41,10 +42,12 @@ export function SearchInput({
           term: searchTerm,
           lng: longitude,
           lat: latitude,
-        }).then((data) => {
-          setFoundPlaces(data.items);
-          addMarkers(data.items, map);
-        });
+        })
+          .then((data) => {
+            setFoundPlaces(data.items);
+            addMarkers(data.items, map);
+          })
+          .catch(() => toastService.error("خطای غیر منتظره"));
       }, 700);
     } else {
       setFoundPlaces([]);

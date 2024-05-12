@@ -8,13 +8,22 @@ import {
 const apiKey = process.env.REACT_APP_SERVICES_API_KEY ?? "";
 const baseURL = process.env.REACT_APP_API_BASE_URL;
 
-// TODO: error handler module can be injected and use on http request errors
 async function getRequest(endPoint: string) {
-  const response = await fetch(`${baseURL}${endPoint}`, {
-    method: "GET",
-    headers: { "Api-Key": apiKey },
-  });
-  return response.json();
+  try {
+    const response = await fetch(`${baseURL}${endPoint}`, {
+      method: "GET",
+      headers: { "Api-Key": apiKey },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request failed with status ${response.status}`);
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error in getRequest:", error);
+    return null;
+  }
 }
 
 export function searchNearbyPlaces(

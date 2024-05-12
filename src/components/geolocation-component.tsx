@@ -2,6 +2,7 @@ import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
 import { LngLatLike } from "mapbox-gl";
 import { useContext, useEffect } from "react";
 import { CoordinatesContext, MapContext } from "../contexts";
+import { toastService } from "../toast";
 
 // This component retrieves the user's current geolocation coordinates using the browser's navigator API.
 export const GeolocationComponent = () => {
@@ -20,11 +21,11 @@ export const GeolocationComponent = () => {
           map?.setCenter(userCoordinates);
         },
         (error) => {
-          console.log("Error retrieving location:", error);
+          console.error("Error retrieving location:", error);
         }
       );
     } else {
-      console.error("Geolocation is not supported by your browser");
+      toastService.error("موقعیت جغرافیایی توسط مرورگر شما پشتیبانی نمی شود");
     }
   }, [setCoordinates, map]);
 
