@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MapContext } from "../contexts";
 import { Place } from "../types";
+import { addMarkers, removeDirection } from "../utils";
+import PlaceDetails from "./place-details";
 import PlaceList from "./place-list";
 import SearchHistory from "./search-history";
 import { SearchInput } from "./search-input";
@@ -12,6 +15,17 @@ const generalCs =
 export function SearchComponent() {
   const [open, setOpen] = useState(false);
   const [foundPlaces, setFoundPlaces] = useState<Place[]>([]);
+  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
+  const { map } = useContext(MapContext);
+
+  const handleClose = (searchTerm: string) => {
+    if (selectedPlace) {
+      removeDirection(map);
+      addMarkers(foundPlaces, map);
+      setSelectedPlace(null);
+    } else if (searchTerm) return true;
+    else setOpen(false);
+  };
 
   return (
     <div
@@ -20,13 +34,21 @@ export function SearchComponent() {
     >
       <SearchInput
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={handleClose}
         setFoundPlaces={setFoundPlaces}
       />
 
       {open && (
         <div className="h-full overflow-auto">
-          <PlaceList places={foundPlaces} />
+          <PlaceDetails place={selectedPlace} />
+
+          {!selectedPlace && (
+            <PlaceList
+              places={foundPlaces}
+              setSelectedPlace={setSelectedPlace}
+            />
+          )}
+
           {!foundPlaces.length && <SearchHistory />}
         </div>
       )}

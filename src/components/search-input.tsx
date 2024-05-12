@@ -11,7 +11,7 @@ const inputWrapperCs =
 
 interface SearchInputProps {
   open: boolean;
-  onClose: VoidFunction;
+  onClose: (searchTerm: string) => true | undefined;
   setFoundPlaces: (list: Place[]) => void;
 }
 
@@ -26,12 +26,11 @@ export function SearchInput({
 
   const handleClose = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     event.stopPropagation();
-    if (searchTerm) {
-      setSearchTerm("");
-    } else onClose();
+    const shouldClear = onClose(searchTerm);
+    if (shouldClear) setSearchTerm("");
   };
 
-  // Effect hook to trigger the searchNearbyLocations API call when the search term changes
+  // Trigger the searchNearbyLocations API call when the search term changes
   useEffect(() => {
     let searchTimeout: NodeJS.Timeout;
     // Set a timeout of 700 ms before triggering the API call because we want to search only when the user has typed the whole search query

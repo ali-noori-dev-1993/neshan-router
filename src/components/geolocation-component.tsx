@@ -28,6 +28,7 @@ export const GeolocationComponent = () => {
     }
   }, [setCoordinates, map]);
 
+  // Creates a marker on the map representing the user's current location.
   useEffect(() => {
     let marker: mapboxgl.Marker | undefined;
     if (map) {
