@@ -1,10 +1,10 @@
 import { createContext } from "react";
 
-interface coordinatesContext {
+interface CoordinatesContextType {
   coordinates: mapboxgl.LngLatLike;
-  setCoordinates: React.Dispatch<React.SetStateAction<mapboxgl.LngLatLike>>;
+  setCoordinates: (coordinates: mapboxgl.LngLatLike) => void;
 }
 
-export const CoordinatesContext = createContext<coordinatesContext>(
-  {} as coordinatesContext
+export const CoordinatesContext = createContext<CoordinatesContextType>(
+  {} as CoordinatesContextType
 );

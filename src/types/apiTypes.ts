@@ -26,3 +26,47 @@ interface Location {
   y: number;
   z: string;
 }
+
+export interface GetDirectionParams {
+  origin: string;
+  destination: string;
+}
+
+export interface Direction {
+  routes: DirectionRoute[];
+}
+
+export interface DirectionRoute {
+  overview_polyline: OverviewPolyline;
+  legs: RouteLeg[];
+}
+
+export interface RouteLeg {
+  summary: string;
+  distance: Distance;
+  duration: Distance;
+  steps: LegStep[];
+}
+
+export interface Distance {
+  value: number;
+  text: string;
+}
+
+export interface LegStep {
+  name: string;
+  instruction: string;
+  bearing_after: number;
+  type: string;
+  distance: Distance;
+  duration: Distance;
+  polyline: string;
+  start_location: number[];
+  rotaryName?: string;
+  modifier?: string;
+  exit?: number;
+}
+
+export interface OverviewPolyline {
+  points: string;
+}

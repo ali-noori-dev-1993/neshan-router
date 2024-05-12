@@ -1,9 +1,9 @@
-import SDKMap from "@neshan-maps-platform/mapbox-gl/dist/src/core/Map";
 import { createContext } from "react";
+import { NeshanMap } from "../types";
 
-interface mapContext {
-  map: SDKMap | null;
-  setMap: React.Dispatch<React.SetStateAction<SDKMap | null>>;
+interface MapContextType {
+  map: NeshanMap | null;
+  setMap: (map: NeshanMap | null) => void;
 }
 
-export const MapContext = createContext<mapContext>({} as mapContext);
+export const MapContext = createContext<MapContextType>({} as MapContextType);

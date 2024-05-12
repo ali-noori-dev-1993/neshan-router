@@ -1,9 +1,12 @@
+import nmp_mapboxgl from "@neshan-maps-platform/mapbox-gl";
+import { LngLatLike } from "mapbox-gl";
 import { useContext, useEffect } from "react";
-import { CoordinatesContext } from "../contexts";
+import { CoordinatesContext, MapContext } from "../contexts";
 
 // This component retrieves the user's current geolocation coordinates using the browser's navigator API.
 export const GeolocationComponent = () => {
-  const { setCoordinates } = useContext(CoordinatesContext);
+  const { coordinates, setCoordinates } = useContext(CoordinatesContext);
+  const { map } = useContext(MapContext);
 
   useEffect(() => {
     // Check if the browser supports geolocation
@@ -12,7 +15,9 @@ export const GeolocationComponent = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setCoordinates([longitude, latitude]);
+          const userCoordinates: LngLatLike = [longitude, latitude];
+          setCoordinates(userCoordinates);
+          map?.setCenter(userCoordinates);
         },
         (error) => {
           console.log("Error retrieving location:", error);
@@ -21,7 +26,24 @@ export const GeolocationComponent = () => {
     } else {
       console.error("Geolocation is not supported by your browser");
     }
-  }, [setCoordinates]);
+  }, [setCoordinates, map]);
+
+  useEffect(() => {
+    let marker: mapboxgl.Marker | undefined;
+    if (map) {
+      const popup = new nmp_mapboxgl.Popup({ offset: 30 }).setText("مکان شما");
+
+      marker = new nmp_mapboxgl.Marker({ color: "#f05e60" })
+        .setPopup(popup)
+        .setLngLat(coordinates)
+        .addTo(map as any)
+        .togglePopup();
+    }
+
+    return () => {
+      marker?.remove();
+    };
+  }, [coordinates, map]);
 
   return null;
 };

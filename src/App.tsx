@@ -1,5 +1,4 @@
 import "@neshan-maps-platform/mapbox-gl/dist/NeshanMapboxGl.css";
-import SDKMap from "@neshan-maps-platform/mapbox-gl/dist/src/core/Map";
 import { useState } from "react";
 import {
   GeolocationComponent,
@@ -7,9 +6,10 @@ import {
   SearchComponent,
 } from "./components";
 import { CoordinatesContext, MapContext } from "./contexts";
+import { NeshanMap } from "./types";
 
 export default function App() {
-  const [map, setMap] = useState<SDKMap | null>(null);
+  const [map, setMap] = useState<NeshanMap | null>(null);
   const [coordinates, setCoordinates] = useState<mapboxgl.LngLatLike>([
     51.389, 35.6892,
   ]);

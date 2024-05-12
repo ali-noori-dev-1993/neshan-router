@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import { searchNearbyPlaces } from "../api/api";
-import { CoordinatesContext } from "../contexts";
-import { useMapMarkers } from "../hooks";
+import { searchNearbyPlaces } from "../api";
+import { CoordinatesContext, MapContext } from "../contexts";
 import { Place } from "../types";
+import { addMarkers, removeMarkers } from "../utils";
 
 const inputWrapperCs =
   "flex items-center w-full h-10 py-2 px-4 gap-3 border border-[#d9d9d9] rounded-2xl";
@@ -22,7 +22,7 @@ export function SearchInput({
 }: SearchInputProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const { coordinates } = useContext(CoordinatesContext);
-  const { addMarkers, removeMarkers } = useMapMarkers();
+  const { map } = useContext(MapContext);
 
   const handleClose = (event: React.MouseEvent<SVGElement, MouseEvent>) => {
     event.stopPropagation();
@@ -44,13 +44,12 @@ export function SearchInput({
           lat: latitude,
         }).then((data) => {
           setFoundPlaces(data.items);
-          removeMarkers();
-          addMarkers(data.items);
+          addMarkers(data.items, map);
         });
       }, 700);
     } else {
       setFoundPlaces([]);
-      removeMarkers();
+      removeMarkers(map);
     }
 
     return () => clearTimeout(searchTimeout); // Cleanup timeout on unmount or searchTerm change
