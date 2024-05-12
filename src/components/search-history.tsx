@@ -16,12 +16,8 @@ export default function SearchHistory({
   const historyList = (
     <div>
       {history.map((item, index) => (
-        <div>
-          <HistoryItem
-            key={index}
-            item={item}
-            setSelectedPlace={setSelectedPlace}
-          />
+        <div key={index}>
+          <HistoryItem item={item} setSelectedPlace={setSelectedPlace} />
           {index < history.length - 1 && (
             <div className="self-stretch border-t border-gray-200 mx-5"></div>
           )}

@@ -12,6 +12,12 @@ export function getSearchHistory() {
 
 export function updateSearchHistory(newSearchEntry: Place) {
   const searchHistory = getSearchHistory();
+  const existingIndex = searchHistory.findIndex(
+    (item) => item.title === newSearchEntry.title
+  );
+  if (existingIndex !== -1) {
+    searchHistory.splice(existingIndex, 1);
+  }
   searchHistory.unshift(newSearchEntry);
   localStorage.setItem(
     LocalStorageKeys.SEARCH_HISTORY,
