@@ -21,7 +21,7 @@ export function SearchComponent() {
   const handleClose = (searchTerm: string) => {
     if (selectedPlace) {
       removeDirection(map);
-      addMarkers(foundPlaces, map);
+      addMarkers({ places: foundPlaces, map, setSelectedPlace });
       setSelectedPlace(null);
     } else if (searchTerm) return true;
     else setOpen(false);
@@ -36,6 +36,7 @@ export function SearchComponent() {
         open={open}
         onClose={handleClose}
         setFoundPlaces={setFoundPlaces}
+        setSelectedPlace={setSelectedPlace}
       />
 
       {open && (

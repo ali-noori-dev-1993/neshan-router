@@ -8,7 +8,7 @@ import {
   routeId,
   sourceId,
 } from "../constants";
-import { Direction, NeshanMap, Place, PlaceType } from "../types";
+import { AddMarkerParams, Direction, NeshanMap, PlaceType } from "../types";
 
 export function getPlaceTypeLabel(type: PlaceType) {
   switch (type) {
@@ -161,11 +161,11 @@ export function removeMarkers(map: NeshanMap | null) {
   if (map?.hasImage(imageId)) map.removeImage(imageId);
 }
 
-export function addMarkers(places: Place[], map: NeshanMap | null) {
-  removeMarkers(map);
-  loadMarkerImage(map);
-  addMarkerFeatures(map, places);
-  addMarkerLayer(map);
+export function addMarkers(params: AddMarkerParams) {
+  removeMarkers(params.map);
+  loadMarkerImage(params.map);
+  addMarkerFeatures(params);
+  addMarkerLayer(params.map);
 }
 
 function loadMarkerImage(map: NeshanMap | null) {
@@ -175,7 +175,7 @@ function loadMarkerImage(map: NeshanMap | null) {
   });
 }
 
-function addMarkerFeatures(map: NeshanMap | null, places: Place[]) {
+function addMarkerFeatures({ map, places, setSelectedPlace }: AddMarkerParams) {
   map?.addSource(sourceId, {
     type: "geojson",
     data: {
@@ -188,9 +188,22 @@ function addMarkerFeatures(map: NeshanMap | null, places: Place[]) {
         },
         properties: {
           title: item.title,
+          item,
         },
       })),
     },
+  });
+
+  // Add click event listener to the marker layer
+  map?.on("click", layerId, (e) => {
+    if (!setSelectedPlace) return;
+    const features = map.queryRenderedFeatures(e.point, { layers: [layerId] });
+    if (!features || features.length === 0) return;
+
+    const clickedFeature = features[0];
+    const clickedItem = clickedFeature.properties?.item;
+    const parsedItem = JSON.parse(clickedItem);
+    setSelectedPlace(parsedItem);
   });
 }
 

@@ -14,12 +14,14 @@ interface SearchInputProps {
   open: boolean;
   onClose: (searchTerm: string) => true | undefined;
   setFoundPlaces: (list: Place[]) => void;
+  setSelectedPlace: (item: Place) => void;
 }
 
 export function SearchInput({
   open,
   onClose,
   setFoundPlaces,
+  setSelectedPlace,
 }: SearchInputProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const { coordinates } = useContext(CoordinatesContext);
@@ -45,7 +47,7 @@ export function SearchInput({
         })
           .then((data) => {
             setFoundPlaces(data.items);
-            addMarkers(data.items, map);
+            addMarkers({ places: data.items, map, setSelectedPlace });
           })
           .catch(() => toastService.error("خطای غیر منتظره"));
       }, 700);

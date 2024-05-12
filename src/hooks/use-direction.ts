@@ -18,7 +18,7 @@ export function useDirection() {
 
       if (!direction) toastService.error("مسیریابی با خطا مواجه شد");
       else {
-        addMarkers([item], map);
+        addMarkers({ places: [item], map });
         showDirectionsOnMap(direction, map);
       }
     } catch (error) {
