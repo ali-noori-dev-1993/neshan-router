@@ -1,5 +1,6 @@
 import { useDirection } from "../hooks";
 import { Place } from "../types";
+import { updateSearchHistory } from "../utils";
 import PlaceAction, { PlaceActionProps } from "./place-action";
 import PlaceInfo from "./place-info";
 
@@ -24,9 +25,14 @@ export default function PlaceItem({ item, setSelectedPlace }: PlaceItemProps) {
     { iconName: "share.svg", title: "ارسال" },
   ];
 
+  const handlePlaceSelection = () => {
+    setSelectedPlace(item);
+    updateSearchHistory(item);
+  };
+
   return (
     <div
-      onClick={() => setSelectedPlace(item)}
+      onClick={handlePlaceSelection}
       className="cursor-pointer flex flex-col py-2 bg-white hover:bg-[#e9f3fc] transition-colors"
     >
       <div className="flex items-start mx-4">

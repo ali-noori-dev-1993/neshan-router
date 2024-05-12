@@ -49,7 +49,9 @@ export function SearchComponent() {
             />
           )}
 
-          {!foundPlaces.length && <SearchHistory />}
+          {!selectedPlace && !foundPlaces.length && (
+            <SearchHistory setSelectedPlace={setSelectedPlace} />
+          )}
         </div>
       )}
     </div>
